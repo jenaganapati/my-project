@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef, Fragment } from 'react';
+import ProblemStmt from './problemStmt/ProblemStmt';
+import PersonDetails from './common/PersonDetails';
+import { Provider } from 'react-redux';
+import {combineReducers} from "redux";
+import { configureStore } from '@reduxjs/toolkit';
+import Home from './project/home';
 
-function App() {
+const initialState = {
+  count: 0
+}
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "I":
+      return {
+        ...state, count: state.count + 1
+      }
+    case "D":
+      return {
+        ...state, count: state.count - 1
+      }
+    case "R":
+      return {
+        ...state, count: 0
+      }
+    default: {
+      return state
+    }
+  }
+}
+
+const store = configureStore({
+  reducer
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Provider store={store}>
+        <Home />
+      </Provider>
+    </Fragment>
   );
 }
 
